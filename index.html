@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Solar System</title>
+  <style>
+    body { margin: 0; overflow: hidden; background: black; }
+    canvas { display: block; }
+  </style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+  let scene = new THREE.Scene();
+  let camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+  let renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+
+  let loader = new THREE.TextureLoader();
+  loader.load('pexels-umkreisel-app-956999.jpg', function(texture) {
+    scene.background = texture;
+  });
+
+  let sunGeo = new THREE.SphereGeometry(2, 32, 32);
+  let sunMat = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+  let sun = new THREE.Mesh(sunGeo, sunMat);
+  scene.add(sun);
+
+  let earthGeo = new THREE.SphereGeometry(0.5, 32, 32);
+  let earthMat = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+  let earth = new THREE.Mesh(earthGeo, earthMat);
+  sun.add(earth);
+  earth.position.x = 5;
+
+  let moonGeo = new THREE.SphereGeometry(0.1, 32, 32);
+  let moonMat = new THREE.MeshBasicMaterial({ color: 0xaaaaaa });
+  let moon = new THREE.Mesh(moonGeo, moonMat);
+  earth.add(moon);
+  moon.position.x = 1;
+
+  let jupiterGeo = new THREE.SphereGeometry(1, 32, 32);
+  let jupiterMat = new THREE.MeshBasicMaterial({ color: 0xd2b48c });
+  let jupiter = new THREE.Mesh(jupiterGeo, jupiterMat);
+  sun.add(jupiter);
+  jupiter.position.x = 10;
+
+  let ringGeo = new THREE.RingGeometry(1.1, 1.3, 64);
+  let ringMat = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });
+  let ring = new THREE.Mesh(ringGeo, ringMat);
+  ring.rotation.x = Math.PI / 2;
+  jupiter.add(ring);
+
+  camera.position.z = 20;
+
+  function animate() {
+    requestAnimationFrame(animate);
+    sun.rotation.y += 0.001;
+    earth.rotation.y += 0.02;
+    moon.rotation.y += 0.05;
+    jupiter.rotation.y += 0.015;
+    renderer.render(scene, camera);
+  }
+  animate();
+</script>
+</body>
+</html>
